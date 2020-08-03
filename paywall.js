@@ -38,20 +38,21 @@ window.onload = function() {
         // }
 
 
-        async function callHtml(url = '') {
+        async function callHtml(url) {
             const options = {
                 method: 'GET',
-                mode: 'no-cors'
+                headers: {'Content-Type': 'text/html', 'Accept': 'text/html', "X-Requested-With": "XMLHttpRequest"},
+                origin: '*'
             };
            return fetch(url, options)
                 .then(function(response) {
                     // When the page is loaded convert it to text
+                    console.log('response:', response)
                     return response.text()
                 })
                 .then(function(html) {
                     // Initialize the DOM parser
                     var parser = new DOMParser();
-
                     // Parse the text
                     var doc = parser.parseFromString(html, "text/html");
 
@@ -59,12 +60,19 @@ window.onload = function() {
                     // Example:
                     // var docArticle = doc.querySelector('article').innerHTML;
 
-                    console.log(`Doc ${doc}`)
+                    let raw = doc.querySelector('body').innerHTML
 
-                    if(doc.body) {
+                    let re = 'subscribe'
+
+                    let result = raw.match(re)
+
+                    //const pay = doc.body.querySelector('a[title="Subscribe Now"]')
+
+                    if(result) {
                         link.style.color = 'green'
+                        console.log('Reached')
                     }
-
+                    return doc.body.innerHTML
 
                 })
                 .catch(function(err) {
@@ -72,8 +80,11 @@ window.onload = function() {
                 });
         }
 
+        const proxy = 'https://serene-shore-35769.herokuapp.com/'
+
         if (validURL(url)) {
-            callHtml(url).then(html => {
+            // url = url.toString()
+            callHtml(proxy+url).then(html => {
                 console.log(`Logging: ${html}`)
             })
             console.log(url)

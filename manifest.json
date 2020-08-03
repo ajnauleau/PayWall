@@ -20,7 +20,10 @@
 
   "permissions": [
     "*://google.com/*",
-    "webRequest"
+    "webRequest",
+    "storage",
+    "*://localhost/*",
+    "<all_urls>"
   ],
 
   "applications": {
